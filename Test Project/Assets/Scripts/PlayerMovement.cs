@@ -7,8 +7,14 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 5.0f;
     public Vector2 movement;
     public Rigidbody2D rb;
-    private float jumpFrame = 0.0f;
+    
+    public int jumpFrame = 0;
+    public float jumpSpeed = 10.0f;
+    public int jumpDuration = 20;
+
     private float yVelocity;
+    public float gravity;
+    private bool grounded = false;
     // Update is called once per frame
     void Update()
     {
@@ -19,17 +25,32 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         yVelocity = rb.velocity.y;
-        if (jumpFrame < 10 && movement.y > 0) {
+        yVelocity -= gravity*Time.deltaTime;
+        if (jumpFrame < jumpDuration && movement.y > 0) {
             jumpFrame += 1;
-            yVelocity = 10.0f;
-        } else if (jumpFrame < 10 && jumpFrame > 0) {
-            jumpFrame -= 1;
+            yVelocity = jumpSpeed;
+        } else if (jumpFrame < jumpDuration && !grounded) {
+            jumpFrame += 2;
+        }
+        if (grounded) {
+            jumpFrame = 0;
         }
         rb.velocity = new Vector2(movement.x*speed,yVelocity);
 
     }
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter2D(Collision2D other)
     {
-        jumpFrame = 10.0f;
+        if (!(other.transform.position.y > transform.position.y))
+        {
+            grounded = true;
+        }
+    }
+    void OnCollisionStay2D(Collision2D other)
+    {
+        OnCollisionEnter2D(other);
+    }
+    void OnCollisionExit2D(Collision2D other)
+    {
+        grounded = false;
     }
 }
