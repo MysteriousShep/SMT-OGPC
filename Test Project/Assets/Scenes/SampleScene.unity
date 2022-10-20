@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 159335648}
   - component: {fileID: 159335647}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,14 +220,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5d4e3fbbd147c448448f9d2518a16f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
   movement: {x: 0, y: 0}
   rb: {fileID: 159335647}
   hitbox: {fileID: 159335648}
-  jumpSpeed: 10
-  jumpDuration: 15
+  speed: 20
+  jumpSpeed: 13
+  jumpDuration: 12
   gravity: 40
   coyoteTime: 5
+  hasDash: 1
+  dashSpeed: 60
+  dashLength: 4
+  dashCooldown: 1
 --- !u!50 &159335647
 Rigidbody2D:
   serializedVersion: 4
@@ -371,7 +375,7 @@ GameObject:
   - component: {fileID: 1033716944}
   - component: {fileID: 1033716943}
   m_Layer: 0
-  m_Name: Square (3)
+  m_Name: Floor (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -500,7 +504,7 @@ GameObject:
   - component: {fileID: 1201290136}
   - component: {fileID: 1201290139}
   m_Layer: 0
-  m_Name: Square (2)
+  m_Name: Floor (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -629,7 +633,7 @@ GameObject:
   - component: {fileID: 2120998882}
   - component: {fileID: 2120998885}
   m_Layer: 0
-  m_Name: Square (1)
+  m_Name: Floor (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

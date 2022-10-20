@@ -4,26 +4,34 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed = 5.0f;
     public Vector2 movement;
     public Rigidbody2D rb;
     public BoxCollider2D hitbox;
+
     private float yVelocity;
     private int coyoteFrame = 0;
     private bool grounded = false;
     private int jumpFrame = 0;
+    private int dashFrame = 0;
     
+    public float speed = 5.0f;
     public float jumpSpeed = 10.0f;
     public int jumpDuration = 20;
     public float gravity;
     public int coyoteTime = 0;
-
+    public bool hasDash = false;
+    public float dashSpeed = 30;
+    public int dashLength = 5;
+    public float dashCooldown = 1.0f;
     
 
     // Update is called once per frame
     void Update()
     {
-        movement.x = Input.GetAxisRaw("Horizontal");
+        if (dashFrame <= 0)
+        {
+            movement.x = Input.GetAxisRaw("Horizontal");
+        }
         movement.y = Input.GetAxisRaw("Jump");
     }
 
@@ -45,9 +53,11 @@ public class PlayerMovement : MonoBehaviour
         if (jumpFrame < jumpDuration && movement.y > 0 && coyoteFrame < coyoteTime) {
             jumpFrame += 1;
             yVelocity = jumpSpeed;
-        } else if (jumpFrame < jumpDuration && (jumpFrame > 0 || coyoteFrame >= coyoteTime) && !grounded) {
+        } 
+        else if (jumpFrame < jumpDuration && (jumpFrame > 0 || coyoteFrame >= coyoteTime) && !grounded) {
             jumpFrame += 2;
-        } else if (!grounded && coyoteFrame < coyoteTime)
+        } 
+        else if (!grounded && coyoteFrame < coyoteTime)
         {
             coyoteFrame += 1;
         }
@@ -55,7 +65,29 @@ public class PlayerMovement : MonoBehaviour
             jumpFrame = 0;
             coyoteFrame = 0;
         }
-        rb.velocity = new Vector2(movement.x*speed,yVelocity);
+        // Dash
+        if (dashFrame > dashCooldown*-60.0f)
+        {
+            dashFrame -= 1;
+        }
+        float dashInput = Input.GetAxis("Fire1");
+        if (hasDash && dashInput > 0 && dashFrame <= dashCooldown*-60.0f && Mathf.Abs(movement.x) > 0.5f) {
+            dashFrame = dashLength;
+            
+        }
+        if (dashFrame > 0)
+        {
+            rb.velocity = new Vector2(movement.x*dashSpeed,yVelocity*0.5f);
+            
+        }
+        else if (dashFrame == 0) 
+        {
+            rb.velocity = new Vector2(0,0);
+        }
+        else
+        {
+            rb.velocity = new Vector2(movement.x*speed,yVelocity);
+        }
 
     }
 }
