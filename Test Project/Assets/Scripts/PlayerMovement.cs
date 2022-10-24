@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rb;
     public BoxCollider2D hitbox;
 
-    private float yVelocity;
+    public float yVelocity = 0.0f;
     private int coyoteFrame = 0;
     private bool grounded = false;
     private int jumpFrame = 0;
