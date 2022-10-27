@@ -53,12 +53,12 @@ public class EnemyPhysics : MonoBehaviour
             {
                 xVelocity = 0;
                 jumpFrame -= 1;
-                transform.localScale = new Vector3(1,((0f-jumpFrame*2f)/jumpDelay),1);
+                //transform.localScale = new Vector3(1,((0f-jumpFrame*2f)/jumpDelay),1);
                 if (jumpFrame < 0)
                 {
                     yVelocity = jumpSpeed;
                     jumpFrame = jumpDelay;
-                    transform.localScale = new Vector3(1,1,1);
+                    // transform.localScale = new Vector3(1,1,1);
                 }
             }
         }

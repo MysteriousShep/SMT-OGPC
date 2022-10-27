@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 movement;
     public Rigidbody2D rb;
     public BoxCollider2D hitbox;
-    public bool possesed = false;
+    public bool possesed = true;
 
     public float yVelocity = 0.0f;
     private int coyoteFrame = 0;
@@ -100,6 +100,17 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             rb.velocity = new Vector2(movement.x*speed,yVelocity);
+        }
+        if (movement.x != 0)
+        {
+            if (rb.velocity.x < 0)
+            {
+                gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            }
+            else
+            {
+                gameObject.GetComponent<SpriteRenderer>().flipX = false;
+            }
         }
 
     }

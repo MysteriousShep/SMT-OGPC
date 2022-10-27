@@ -14,7 +14,7 @@ public class PlayerPosses : MonoBehaviour
         mouse.z = 0;
         if (Input.GetButtonDown("Fire1"))
         {
-            if (Vector3.Distance(transform.position,mouse)<1f)
+            if (Vector3.Distance(transform.position,mouse)<0.5f)
             {
                 possesed = true;
                 gameObject.tag = "Possesed Player";

@@ -19,5 +19,10 @@ public class PossesedTrail : MonoBehaviour
         {
             transform.position = new Vector3(player.transform.position.x,player.transform.position.y,1f);
         }
+        else
+        {
+            transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = new Vector3(transform.position.x,transform.position.y,1f);
+        }
     }
 }
