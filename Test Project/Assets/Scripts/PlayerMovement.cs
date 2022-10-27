@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 movement;
     public Rigidbody2D rb;
     public BoxCollider2D hitbox;
+    public bool possesed = false;
 
     public float yVelocity = 0.0f;
     private int coyoteFrame = 0;
@@ -28,11 +29,23 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (dashFrame <= 0)
+        if (possesed)
         {
-            movement.x = Input.GetAxisRaw("Horizontal");
+            if (dashFrame <= 0)
+            {
+                movement.x = Input.GetAxisRaw("Horizontal");
+            }
+            movement.y = Input.GetAxisRaw("Jump");
         }
-        movement.y = Input.GetAxisRaw("Jump");
+        else
+        {
+            movement.x = 0;
+            movement.y = 0;
+        }
+    }
+    void LateUpdate()
+    {
+        possesed = gameObject.GetComponent<PlayerPosses>().possesed;
     }
 
     void FixedUpdate()
@@ -70,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
         {
             dashFrame -= 1;
         }
-        float dashInput = Input.GetAxis("Fire1");
+        float dashInput = Input.GetAxisRaw("Fire3");
         if (hasDash && dashInput > 0 && dashFrame <= dashCooldown*-60.0f && Mathf.Abs(movement.x) > 0.5f) {
             dashFrame = dashLength;
             
