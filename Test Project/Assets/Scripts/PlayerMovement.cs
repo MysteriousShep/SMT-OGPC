@@ -42,6 +42,19 @@ public class PlayerMovement : MonoBehaviour
             movement.x = 0;
             movement.y = 0;
         }
+        /*
+        bool zMovementRight = Input.GetButtonDown("RotateRight");
+        if (zMovementRight)
+        {
+            transform.Rotate(Vector3.up,45.0f);
+        }
+        bool zMovementLeft = Input.GetButtonDown("RotateLeft");
+        if (zMovementLeft)
+        {
+            transform.Rotate(Vector3.up,-45.0f);
+        }
+        */
+        
     }
     void LateUpdate()
     {

@@ -17,13 +17,16 @@ public class CameraFollowPlayer : MonoBehaviour
         {
             Vector3 targetPosition = player.transform.position;
             targetPosition = new Vector3(targetPosition.x,targetPosition.y,transform.position.z);
-            transform.position = Vector3.Lerp(transform.position,targetPosition,smoothing);
+            transform.position = Vector3.Lerp(transform.position,targetPosition,Time.deltaTime*smoothing);
+            //transform.RotateAround(player.transform.position,Vector3.up,player.transform.rotation.y-transform.rotation.y);
         }
         else
         {
+            
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
             transform.position = new Vector3(transform.position.x+movement.x*speed*Time.deltaTime,transform.position.y+movement.y*speed*Time.deltaTime,transform.position.z);
+            
         }
     }
 }
