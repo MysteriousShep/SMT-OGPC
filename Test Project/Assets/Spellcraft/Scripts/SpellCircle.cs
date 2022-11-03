@@ -64,14 +64,14 @@ public class SpellCircle : MonoBehaviour
         transform.position = new Vector3(0,0,0);
         
         // Set line color
-        Color newColor = new Color(Mathf.Clamp((color)/10,0,1),1-Mathf.Clamp((color+10)/20,0,1),1-Mathf.Clamp((color+10)/20,0,1),1);
+        Color newColor = new Color(Mathf.Clamp((color)/30,0,1),1-Mathf.Clamp((color+10)/30,0,1),1-Mathf.Clamp((color+10)/30,0,1),1);
         if (GreenPositive) 
         {
-            newColor.g = Mathf.Clamp((color-10)/20,0,1);
+            newColor.g = Mathf.Clamp((color-10)/30,0,1);
         }
         if (BluePositive)
         {
-            newColor.b = Mathf.Clamp((color-10)/20,0,1);
+            newColor.b = Mathf.Clamp((color-10)/30,0,1);
         }
         line.endColor = newColor;
         line.startColor = line.endColor;
