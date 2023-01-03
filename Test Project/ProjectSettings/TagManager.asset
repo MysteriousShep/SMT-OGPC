@@ -6,7 +6,9 @@ TagManager:
   tags:
   - Ground
   - Enemy
-  - Possesed Player
+  - Enemy Projectile
+  - Friendly
+  - Currency
   layers:
   - Default
   - TransparentFX
