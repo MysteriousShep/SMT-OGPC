@@ -7,6 +7,8 @@ public class FollowPlayer : MonoBehaviour
     public GameObject player;
     public List<Vector3> trail;
     public int followDelay = 10;
+    public float gravity = 0;
+    public bool first = false;
     void FixedUpdate()
     {
         if (trail.Count >= followDelay)
@@ -27,11 +29,18 @@ public class FollowPlayer : MonoBehaviour
             trail.Add(player.transform.position);
         }
         //Set position
+        if (first) {
+            transform.Translate(Vector3.right*-0.25f);
+        }
         if (trail.Count > followDelay)
         {
             trail.RemoveAt(0);
             transform.position = trail[0];
         }
-        
+        transform.position = Vector3.MoveTowards(transform.position,player.transform.position,gravity);
+        transform.Translate(Vector3.down*gravity);
+        if (first) {
+            transform.Translate(Vector3.right*0.25f);
+        }
     }
 }
