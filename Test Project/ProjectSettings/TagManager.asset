@@ -9,6 +9,7 @@ TagManager:
   - Enemy Projectile
   - Friendly
   - Currency
+  - LevelEnd
   layers:
   - Default
   - TransparentFX

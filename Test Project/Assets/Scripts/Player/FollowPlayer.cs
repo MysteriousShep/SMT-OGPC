@@ -29,9 +29,9 @@ public class FollowPlayer : MonoBehaviour
             trail.Add(player.transform.position);
         }
         //Set position
-        if (first) {
+        /*if (first) {
             transform.Translate(Vector3.right*-0.25f);
-        }
+        }*/
         if (trail.Count > followDelay)
         {
             trail.RemoveAt(0);
