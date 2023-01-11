@@ -10,10 +10,11 @@ public class LaserShoot : MonoBehaviour
     public float fireRate = 0.5f;
     public int fireCount = 4;
     private GameObject lastLaser;
+    public float fireStartDelay = 1f;
     // Loop fire method
     void Start()
     {
-        InvokeRepeating("Warn", 2f, 1f/fireRate);
+        InvokeRepeating("Warn", fireStartDelay, 1f/fireRate);
     }
     // Warn player before shooting
     void Warn()
@@ -21,11 +22,11 @@ public class LaserShoot : MonoBehaviour
         for (int i = 0; i < fireCount; i++) 
         {
             lastLaser = Instantiate(warnObject, transform.position, transform.rotation);
-            Destroy(lastLaser,0.5f);
+            Destroy(lastLaser,0.75f);
             transform.Rotate(new Vector3(0,0,360/fireCount));
         }
         transform.localRotation = Quaternion.Euler(new Vector3(0,0,0));
-        Invoke("Fire",0.5f);
+        Invoke("Fire",0.75f);
     }
     // Shoot
     void Fire()

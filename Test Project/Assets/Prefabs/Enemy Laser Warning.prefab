@@ -95,5 +95,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 637d89e930360e1418397020f86dba08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shrinkDelay: 0.4
+  shrinkDelay: 0.65
   shrinkMultiplier: 1.5

@@ -9,6 +9,7 @@ public class FollowPlayer : MonoBehaviour
     public int followDelay = 10;
     public float gravity = 0;
     public bool first = false;
+    public float wind = 0;
     void FixedUpdate()
     {
         if (trail.Count >= followDelay)
@@ -29,18 +30,21 @@ public class FollowPlayer : MonoBehaviour
             trail.Add(player.transform.position);
         }
         //Set position
-        /*if (first) {
-            transform.Translate(Vector3.right*-0.25f);
-        }*/
+        if (first) {
+            transform.Translate(Vector3.right*0);
+        }
         if (trail.Count > followDelay)
         {
             trail.RemoveAt(0);
             transform.position = trail[0];
         }
+        
+        transform.Translate(Vector3.left*-wind);
         transform.position = Vector3.MoveTowards(transform.position,player.transform.position,gravity);
         transform.Translate(Vector3.down*gravity);
+        transform.Translate(Vector3.left*wind);
         if (first) {
-            transform.Translate(Vector3.right*0.25f);
+            transform.Translate(Vector3.right*-0);
         }
     }
 }

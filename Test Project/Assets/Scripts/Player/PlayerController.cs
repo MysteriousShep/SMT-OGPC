@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public List<GameObject> hair;
     public GameObject hairObject;
     public int hairLength = 6;
+    public Sprite hairSprite;
 
     void Start() 
     {
@@ -19,6 +20,10 @@ public class PlayerController : MonoBehaviour
         {
             hair.Add(Instantiate(hairObject,transform.position,transform.rotation));
             hair[i].GetComponent<FollowPlayer>().player = hair[i-1];
+            if (i > hairLength-4)
+            {
+                hair[i].GetComponent<SpriteRenderer>().sprite = hairSprite;
+            }
         }
     }
 
@@ -27,6 +32,21 @@ public class PlayerController : MonoBehaviour
     {
         movement.x = Input.GetAxisRaw("Horizontal"); // Set movement X to HORIZONTAL input
         movement.y = Input.GetAxisRaw("Vertical"); // Set movement Y to VERTICAL input
+        if (movement.x < 0)
+        {
+            for (int i = 0; i < hairLength; i++)
+            {
+                hair[i].transform.localScale = new Vector3(-0.5f,0.5f,1);
+            }
+            
+        }
+        if (movement.x > 0)
+        {
+            for (int i = 0; i < hairLength; i++)
+            {
+                hair[i].transform.localScale = new Vector3(0.5f,0.5f,1);
+            }
+        }
     }
 
     // Every 60th of a second

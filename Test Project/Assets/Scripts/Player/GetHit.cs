@@ -14,6 +14,7 @@ public class GetHit : MonoBehaviour
         if (health <= 0)
         {
             dead = true; // Mark this object as dead
+            Destroy(gameObject);
         }
     }
 
