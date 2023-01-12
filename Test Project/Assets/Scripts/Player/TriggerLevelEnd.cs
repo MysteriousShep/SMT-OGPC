@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TriggerLevelEnd : MonoBehaviour
 {
@@ -13,15 +14,7 @@ public class TriggerLevelEnd : MonoBehaviour
         if (other.gameObject.CompareTag("LevelEnd"))
         {
             level += 1;
-            transform.position = spawnPos;
-            GameObject[ ] friendlies = GameObject.FindGameObjectsWithTag("Friendly");
-            if (friendlies.Length > 0)
-            {
-                foreach(GameObject friendly in friendlies)
-                {
-                    friendly.transform.position = transform.position;
-                }
-            }
+            SceneManager.LoadScene("Level1");
         }
     }
 }

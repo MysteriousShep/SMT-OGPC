@@ -16,11 +16,13 @@ public class PlayerController : MonoBehaviour
         hair.Add(Instantiate(hairObject,transform.position,transform.rotation));
         hair[0].GetComponent<FollowPlayer>().player = gameObject;
         hair[0].GetComponent<FollowPlayer>().first = true;
+        hair[0].transform.Translate(Vector3.back*1f);
         for (int i = 1; i < hairLength; i++)
         {
             hair.Add(Instantiate(hairObject,transform.position,transform.rotation));
             hair[i].GetComponent<FollowPlayer>().player = hair[i-1];
-            if (i > hairLength-4)
+            hair[i].transform.Translate(Vector3.back*1f);
+            if (i > hairLength-3)
             {
                 hair[i].GetComponent<SpriteRenderer>().sprite = hairSprite;
             }
@@ -38,6 +40,7 @@ public class PlayerController : MonoBehaviour
             {
                 hair[i].transform.localScale = new Vector3(-0.5f,0.5f,1);
             }
+            transform.localScale = new Vector3(-0.75f,0.75f,1);
             
         }
         if (movement.x > 0)
@@ -46,6 +49,7 @@ public class PlayerController : MonoBehaviour
             {
                 hair[i].transform.localScale = new Vector3(0.5f,0.5f,1);
             }
+            transform.localScale = new Vector3(0.75f,0.75f,1);
         }
     }
 

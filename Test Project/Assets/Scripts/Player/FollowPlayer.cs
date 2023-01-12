@@ -31,20 +31,24 @@ public class FollowPlayer : MonoBehaviour
         }
         //Set position
         if (first) {
-            transform.Translate(Vector3.right*0);
+            transform.Translate(Vector3.right*0f);
         }
         if (trail.Count > followDelay)
         {
             trail.RemoveAt(0);
             transform.position = trail[0];
+            transform.Translate(Vector3.back*-1f);
         }
         
         transform.Translate(Vector3.left*-wind);
-        transform.position = Vector3.MoveTowards(transform.position,player.transform.position,gravity);
+        Vector3 targetPos = player.transform.position;
+        targetPos.z += 1f;
+        transform.position = Vector3.MoveTowards(transform.position,targetPos,gravity);
         transform.Translate(Vector3.down*gravity);
         transform.Translate(Vector3.left*wind);
         if (first) {
-            transform.Translate(Vector3.right*-0);
+            transform.Translate(Vector3.right*-0f);
         }
+        
     }
 }
