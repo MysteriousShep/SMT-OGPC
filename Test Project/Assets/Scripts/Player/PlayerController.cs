@@ -9,7 +9,13 @@ public class PlayerController : MonoBehaviour
     public List<GameObject> hair;
     public GameObject hairObject;
     public int hairLength = 6;
+    public Sprite sprite;
     public Sprite hairSprite;
+    public bool hasDash;
+    public Sprite dashSprite;
+    public int dashFrame = 0;
+    public int dashCooldown = 20;
+    public float dashSpeed = 10;
 
     void Start() 
     {
@@ -32,8 +38,49 @@ public class PlayerController : MonoBehaviour
     // Every frame
     void Update()
     {
-        movement.x = Input.GetAxisRaw("Horizontal"); // Set movement X to HORIZONTAL input
-        movement.y = Input.GetAxisRaw("Vertical"); // Set movement Y to VERTICAL input
+        if (dashFrame <= 0)
+        {
+            
+            movement.x = Input.GetAxisRaw("Horizontal"); // Set movement X to HORIZONTAL input
+            movement.y = Input.GetAxisRaw("Vertical"); // Set movement Y to VERTICAL input
+            if (Input.GetButtonDown("Jump"))
+            {
+                dashFrame = dashCooldown;
+                if (movement.x == 0 && movement.y == 0) 
+                {
+                    movement.x = Mathf.Sign(transform.localScale.x);
+                }
+            }
+            for (int i = 0; i < hairLength; i++)
+            {
+                hair[i].GetComponent<SpriteRenderer>().color = new Color(1,1,1,1);
+            }
+            GetComponent<SpriteRenderer>().sprite = sprite;
+        }
+        else
+        {
+            dashFrame -= 1;
+            hair[0].GetComponent<SpriteRenderer>().color = new Color(1,0,0,1);
+            /*    
+            hair[0].GetComponent<FollowPlayer>().trail[1] = transform.position;
+            hair[0].transform.position = new Vector3(transform.position.x,transform.position.y,transform.position.z+1);
+            hair[0].transform.Translate(movement*dashSpeed*Time.deltaTime*1/3);
+            */
+            for (int i = 1; i < hairLength; i++)
+            {
+                hair[i].GetComponent<SpriteRenderer>().color = new Color(1,0,0,1);
+                /*
+                hair[i].GetComponent<FollowPlayer>().trail[1] = transform.position;
+                hair[i].transform.position = new Vector3(transform.position.x,transform.position.y,transform.position.z+1);
+                hair[i].transform.Translate(movement*dashSpeed*-Time.deltaTime*i/3);
+                
+                hair[i].GetComponent<FollowPlayer>().trail[0] = hair[i].transform.position;
+                hair[i].GetComponent<FollowPlayer>().trail[1] = hair[i].transform.position;
+                hair[i].GetComponent<FollowPlayer>().trail[2] = hair[i].transform.position;
+                */
+            }
+            GetComponent<SpriteRenderer>().sprite = dashSprite;
+        }
         if (movement.x < 0)
         {
             for (int i = 0; i < hairLength; i++)
@@ -56,6 +103,13 @@ public class PlayerController : MonoBehaviour
     // Every 60th of a second
     void FixedUpdate()
     {
-        GetComponent<Rigidbody2D>().velocity = movement*speed; // Move player based on input
+        if (dashFrame <= 0)
+        {
+            GetComponent<Rigidbody2D>().velocity = movement*speed; // Move player based on input
+        }
+        else
+        {
+            GetComponent<Rigidbody2D>().velocity = movement*dashSpeed; // Move player based on input
+        }
     }
 }

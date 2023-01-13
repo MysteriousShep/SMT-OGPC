@@ -509,7 +509,13 @@ MonoBehaviour:
   hair: []
   hairObject: {fileID: 5703832605233889968, guid: e14c7ef33ffba9043a1fe8409aa961d1, type: 3}
   hairLength: 3
+  sprite: {fileID: 21300000, guid: 2cd9b59f20191f04e96fff44aa52e8c6, type: 3}
   hairSprite: {fileID: 6729572152601682, guid: 4277b09711d167e429199c0d04853d10, type: 3}
+  hasDash: 0
+  dashSprite: {fileID: 21300000, guid: 7ec71674f04872944b01bff733097c65, type: 3}
+  dashFrame: 0
+  dashCooldown: 10
+  dashSpeed: 20
 --- !u!212 &434407435
 SpriteRenderer:
   m_ObjectHideFlags: 0
