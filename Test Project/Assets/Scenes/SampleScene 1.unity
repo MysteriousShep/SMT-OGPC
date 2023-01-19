@@ -246,7 +246,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192847898}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 4.5, z: 0}
+  m_LocalPosition: {x: -2, y: 4.5, z: 0.1}
   m_LocalScale: {x: 14, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -375,7 +375,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 215236942}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7, y: -2.5, z: 0}
+  m_LocalPosition: {x: -7, y: -2.5, z: 0.1}
   m_LocalScale: {x: 4, y: 2.9998498, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -787,8 +787,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 530021937}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 1.5, z: 0}
-  m_LocalScale: {x: 13.999499, y: 0.99997497, z: 1}
+  m_LocalPosition: {x: -2, y: 1.5, z: 0.1}
+  m_LocalScale: {x: 14, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 20
@@ -1116,7 +1116,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 814876363}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.5, y: 0, z: 0}
+  m_LocalPosition: {x: 8.5, y: 0, z: 0.1}
   m_LocalScale: {x: 1, y: 11, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1161,13 +1161,13 @@ MonoBehaviour:
   speed: 4
   hair: []
   hairObject: {fileID: 5703832605233889968, guid: e14c7ef33ffba9043a1fe8409aa961d1, type: 3}
-  hairLength: 6
+  hairLength: 24
   sprite: {fileID: 21300000, guid: 2cd9b59f20191f04e96fff44aa52e8c6, type: 3}
   hairSprite: {fileID: 6729572152601682, guid: 4277b09711d167e429199c0d04853d10, type: 3}
-  hasDash: 0
+  hasDash: 1
   dashSprite: {fileID: 21300000, guid: 7ec71674f04872944b01bff733097c65, type: 3}
   dashFrame: 0
-  dashCooldown: 10
+  dashCooldown: 7
   dashSpeed: 20
 --- !u!212 &988108074
 SpriteRenderer:
@@ -1445,7 +1445,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033716942}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: -1.5, z: 0}
+  m_LocalPosition: {x: 3, y: -1.5, z: 0.1}
   m_LocalScale: {x: 10, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1783,7 +1783,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1201290135}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.5, y: 0, z: 0}
+  m_LocalPosition: {x: -8.5, y: 0, z: 0.1}
   m_LocalScale: {x: 1, y: 10, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2332,7 +2332,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2120998881}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: -4.5, z: 0}
+  m_LocalPosition: {x: -2, y: -4.5, z: 0.1}
   m_LocalScale: {x: 14, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2393,9 +2393,6 @@ MonoBehaviour:
   player: {fileID: 988108072}
   trail: []
   followDelay: 20
-  gravity: 0
-  first: 0
-  wind: 0
 --- !u!212 &3590971243700976210
 SpriteRenderer:
   m_ObjectHideFlags: 0

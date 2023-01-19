@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5703832605233889971}
   - component: {fileID: 5703832605233889970}
-  - component: {fileID: 5703832605233889969}
+  - component: {fileID: -2300220123745791513}
   m_Layer: 0
   m_Name: Hair
   m_TagString: Untagged
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5703832605233889969
+--- !u!114 &-2300220123745791513
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,12 +92,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5703832605233889968}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddb355435a5664f41a6f209952848259, type: 3}
+  m_Script: {fileID: 11500000, guid: 53ae7f917d21e9f42992c76d5e0b8474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   trail: []
-  followDelay: 3
-  gravity: 0.1
+  followDelay: 2
+  gravity: 0.025
   first: 0
   wind: 0
+  index: 2
