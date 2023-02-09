@@ -9,5 +9,10 @@ public class MoveForward : MonoBehaviour
     void FixedUpdate()
     {
         transform.Translate(Vector3.right * speed * Time.deltaTime);
+        if (Mathf.Abs(transform.position.x) > 10 || Mathf.Abs(transform.position.y) > 7)
+        {
+            Destroy(gameObject);
+        }
+
     }
 }

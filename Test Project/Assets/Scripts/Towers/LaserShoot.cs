@@ -21,7 +21,7 @@ public class LaserShoot : MonoBehaviour
     {
         for (int i = 0; i < fireCount; i++) 
         {
-            lastLaser = Instantiate(warnObject, transform.position, transform.rotation);
+            lastLaser = Instantiate(warnObject, new Vector3(transform.position.x,transform.position.y+0.1f,transform.position.z-0.15f), transform.rotation);
             Destroy(lastLaser,0.75f);
             transform.Rotate(new Vector3(0,0,360/fireCount));
         }
@@ -33,7 +33,7 @@ public class LaserShoot : MonoBehaviour
     {
         for (int i = 0; i < fireCount; i++) 
         {
-            lastLaser = Instantiate(projectile, transform.position, transform.rotation);
+            lastLaser = Instantiate(projectile, new Vector3(transform.position.x,transform.position.y+0.1f,transform.position.z-0.15f), transform.rotation);
             Destroy(lastLaser,0.5f);
             transform.Rotate(new Vector3(0,0,360/fireCount));
         }

@@ -8,11 +8,13 @@ public class TrackerShoot : MonoBehaviour
     public GameObject projectile;
     public float range = 3f;
     public float fireRate = 0.5f;
+    public GameObject bottom;
 
     // Loop fire method
     void Start()
     {
         InvokeRepeating("Fire", 2f, 1f/fireRate);
+        Instantiate(bottom,new Vector3(transform.position.x,transform.position.y,transform.position.z+0.15f),transform.rotation);
     }
     // Shoot
     void Fire()
@@ -34,7 +36,8 @@ public class TrackerShoot : MonoBehaviour
             float angle = Vector2.SignedAngle(Vector2.right, target.transform.position - transform.position);
 
             Vector3 targetRotation = new Vector3(0, 0, angle);
-            Instantiate(projectile, transform.position, Quaternion.Euler(targetRotation));
+            Instantiate(projectile, new Vector3(transform.position.x,transform.position.y,transform.position.z-0.1f), Quaternion.Euler(targetRotation));
+            transform.rotation = Quaternion.Euler(targetRotation);
         }
     }
 }
