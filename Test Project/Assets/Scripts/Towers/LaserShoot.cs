@@ -11,10 +11,23 @@ public class LaserShoot : MonoBehaviour
     public int fireCount = 4;
     private GameObject lastLaser;
     public float fireStartDelay = 1f;
+    private GameObject cursor;
+    public bool playing = false;
     // Loop fire method
     void Start()
     {
-        InvokeRepeating("Warn", fireStartDelay, 1f/fireRate);
+        cursor = GameObject.Find("Cursor");
+    }
+    void Update()
+    {
+        if (cursor != null)
+        {
+            if (!playing && !cursor.gameObject.activeSelf)
+            {
+                InvokeRepeating("Warn", fireStartDelay, 1f/fireRate);
+                playing = true;
+            }
+        }
     }
     // Warn player before shooting
     void Warn()

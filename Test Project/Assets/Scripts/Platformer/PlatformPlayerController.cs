@@ -24,14 +24,20 @@ public class PlatformPlayerController : MonoBehaviour
     public GameObject hairObject;
     public int hairLength = 6;
     public Sprite hairSprite;
+    public int wallJumpCooldown = 20;
+    private int wallJumpFrame = 0;
+    private float yMin = 0.25f;
+    private float yMax = 1;
 
     // Start is called before the first frame update
     void Start()
     {
         //playerAnimator = GetComponent<Animator>();
+        /*
         hair.Add(Instantiate(hairObject,new Vector3(transform.position.x,transform.position.y-0.1f,transform.position.z-1),transform.rotation));
         hair[0].GetComponent<HairFollow>().player = gameObject;
         hair[0].GetComponent<HairFollow>().first = true;
+        */
         for (int i = 1; i < hairLength; i++)
         {
             hair.Add(Instantiate(hairObject,new Vector3(transform.position.x,transform.position.y-i*0.1f,transform.position.z-1),transform.rotation));
@@ -72,7 +78,7 @@ public class PlatformPlayerController : MonoBehaviour
     {
         
         
-        GetHitBoxAtPosition(transform.position.x,transform.position.y+yVelocity,0.35f,0.5f);
+        GetHitBoxAtPosition(transform.position.x,transform.position.y+yVelocity,1.3f,0.5f);
 
         
 
@@ -81,17 +87,17 @@ public class PlatformPlayerController : MonoBehaviour
         {
             
             
-            GetHitBoxAtPosition(transform.position.x,transform.position.y,0.35f,0.5f);
+            GetHitBoxAtPosition(transform.position.x,transform.position.y,1.3f,0.5f);
             for (int i = 0; i < 30; i++)
             {
                 if (hit == null) 
                 {
                     transform.Translate(new Vector3(0,0.01f*Mathf.Sign(yVelocity),0),Space.World);
-                    GetHitBoxAtPosition(transform.position.x,transform.position.y,0.35f,0.5f);
+                    GetHitBoxAtPosition(transform.position.x,transform.position.y,1.3f,0.5f);
                 }
             }
             yVelocity = 0;
-            GetHitBoxAtPosition(transform.position.x,transform.position.y,0.45f,0.4f);
+            GetHitBoxAtPosition(transform.position.x,transform.position.y,1.4f,0.4f);
             if (hit != null && hit.gameObject != gameObject)
             {
                 grounded = true;
@@ -153,68 +159,73 @@ public class PlatformPlayerController : MonoBehaviour
         transform.Translate(new Vector3(0,yVelocity,0),Space.World);
         
         xVelocity -= xSpeed;
-        
-        if (movement.x != 0)
-        {
-            if (movement.x < 0)
+        if (wallJumpFrame <= 0) {
+            if (movement.x != 0)
             {
-                if (xSpeed > 0)
+                if (movement.x < 0)
                 {
-                    xSpeed -= speed/accelleration;
+                    if (xSpeed > 0)
+                    {
+                        xSpeed -= speed/accelleration;
+                    }
+                    if (xSpeed > -speed)
+                    {
+                        xSpeed -= speed/accelleration;
+                    }
                 }
-                if (xSpeed > -speed)
+                else
                 {
-                    xSpeed -= speed/accelleration;
+                    if (xSpeed < 0)
+                    {
+                        xSpeed += speed/accelleration;
+                    }
+                    if (xSpeed < speed)
+                    {
+                        xSpeed += speed/accelleration;
+                    }
                 }
             }
             else
             {
                 if (xSpeed < 0)
                 {
-                    xSpeed += speed/accelleration;
+                    xSpeed += speed/deccelleration;
+                    if (xSpeed > 0)
+                    {
+                        xSpeed = 0;
+                    }
                 }
-                if (xSpeed < speed)
+                if (xSpeed > 0)
                 {
-                    xSpeed += speed/accelleration;
+                    xSpeed -= speed/deccelleration;
+                    if (xSpeed < 0)
+                    {
+                        xSpeed = 0;
+                    }
+                }
+                if (xVelocity < 0)
+                {
+                    xVelocity += speed/deccelleration;
+                    if (xVelocity > 0)
+                    {
+                        xVelocity = 0;
+                    }
+                }
+                if (xVelocity > 0)
+                {
+                    xVelocity -= speed/deccelleration;
+                    if (xVelocity < 0)
+                    {
+                        xVelocity = 0;
+                    }
                 }
             }
+            
         }
         else
         {
-            if (xSpeed < 0)
-            {
-                xSpeed += speed/deccelleration;
-                if (xSpeed > 0)
-                {
-                    xSpeed = 0;
-                }
-            }
-            if (xSpeed > 0)
-            {
-                xSpeed -= speed/deccelleration;
-                if (xSpeed < 0)
-                {
-                    xSpeed = 0;
-                }
-            }
+            wallJumpFrame -= 1;
         }
-        if (xVelocity < 0)
-        {
-            xVelocity += speed/deccelleration;
-            if (xVelocity > 0)
-            {
-                xVelocity = 0;
-            }
-        }
-        if (xVelocity > 0)
-        {
-            xVelocity -= speed/deccelleration;
-            if (xVelocity < 0)
-            {
-                xVelocity = 0;
-            }
-        }
-        
         if (xSpeed < 0)
         {
             GetComponent<SpriteRenderer>().flipX = true;
@@ -226,31 +237,48 @@ public class PlatformPlayerController : MonoBehaviour
         //playerAnimator.SetFloat("xSpeed",Mathf.Abs(xSpeed/speed));
         
         xVelocity += xSpeed;
-        GetHitBoxAtPosition(transform.position.x+xVelocity,transform.position.y,0.25f,0.4f);
+        GetHitBoxAtPosition(transform.position.x+xVelocity,transform.position.y,1.2f,0.4f);
         if (hit != null && hit.gameObject != gameObject) 
         {
             
             
-            GetHitBoxAtPosition(transform.position.x,transform.position.y,0.25f,0.4f);
+            GetHitBoxAtPosition(transform.position.x,transform.position.y,1.2f,0.4f);
             for (int i = 0; i < 30; i++)
             {
                 if (hit == null) 
                 {
                     transform.Translate(new Vector3(0.01f*Mathf.Sign(xVelocity),0,0));
-                    GetHitBoxAtPosition(transform.position.x,transform.position.y,0.25f,0.4f);
+                    GetHitBoxAtPosition(transform.position.x,transform.position.y,1.2f,0.4f);
                     
                 }
             }
             transform.Translate(new Vector3(-0.01f*Mathf.Sign(xVelocity),0,0));
-            xVelocity = 0;
-            xSpeed = 0;
+            if (movement.y > 0)
+            {
+                xSpeed *= -1;
+                yVelocity = jumpSpeed;
+                jumpFrame = 0;
+                coyoteFrame = 0;
+                if (wallJumpFrame <= 0 && Mathf.Abs(xVelocity) < 0.25f)
+                {
+                    xVelocity *= -1.5f;
+                } else {
+                    xVelocity *= -1;
+                }
+                wallJumpFrame = wallJumpCooldown;
+            }
+            else
+            {
+                xVelocity = 0;
+                xSpeed = 0;
+            }
         }
         transform.Translate(new Vector3(xVelocity,0,0));
         
         
     }
 
-    void GetHitBoxAtPosition(float x, float y,float minHeight = 0.25f, float maxHeight = 1.0f)
+    void GetHitBoxAtPosition(float x, float y,float minHeight = 0.55f, float maxHeight = 1.0f)
     {
         Vector2 max = new Vector2(x+0.45f,y+maxHeight);
         Vector2 min = new Vector2(x-0.45f,y-minHeight);

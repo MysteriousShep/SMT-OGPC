@@ -8,13 +8,27 @@ public class TrackerShoot : MonoBehaviour
     public GameObject projectile;
     public float range = 3f;
     public float fireRate = 0.5f;
+    public float fireStartDelay = 2f;
     public GameObject bottom;
+    public bool playing = false;
+    private GameObject cursor;
 
     // Loop fire method
     void Start()
     {
-        InvokeRepeating("Fire", 2f, 1f/fireRate);
-        Instantiate(bottom,new Vector3(transform.position.x,transform.position.y,transform.position.z+0.15f),transform.rotation);
+        cursor = GameObject.Find("Cursor");
+        Instantiate(bottom,new Vector3(transform.position.x,transform.position.y,transform.position.z+0.01f),transform.rotation);
+    }
+    void Update()
+    {
+        if (cursor != null)
+        {
+            if (!playing && !cursor.gameObject.activeSelf)
+            {
+                InvokeRepeating("Fire", fireStartDelay, 1f/fireRate);
+                playing = true;
+            }
+        }
     }
     // Shoot
     void Fire()
@@ -31,13 +45,16 @@ public class TrackerShoot : MonoBehaviour
                 }
             }
         }
-        if (Vector3.Distance(target.transform.position, transform.position) < range)
+        if (target != null) 
         {
-            float angle = Vector2.SignedAngle(Vector2.right, target.transform.position - transform.position);
+            if (Vector3.Distance(target.transform.position, transform.position) < range)
+            {
+                float angle = Vector2.SignedAngle(Vector2.right, target.transform.position - transform.position);
 
-            Vector3 targetRotation = new Vector3(0, 0, angle);
-            Instantiate(projectile, new Vector3(transform.position.x,transform.position.y,transform.position.z-0.1f), Quaternion.Euler(targetRotation));
-            transform.rotation = Quaternion.Euler(targetRotation);
+                Vector3 targetRotation = new Vector3(0, 0, angle);
+                Instantiate(projectile, new Vector3(transform.position.x,transform.position.y,transform.position.z-0.1f), Quaternion.Euler(targetRotation));
+                transform.rotation = Quaternion.Euler(targetRotation);
+            }
         }
     }
 }

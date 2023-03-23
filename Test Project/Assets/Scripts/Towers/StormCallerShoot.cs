@@ -12,10 +12,23 @@ public class StormCallerShoot : MonoBehaviour
     private GameObject lastWarning;
     public float fireStartDelay = 2f;
     private int fireIteration = 0;
+    private GameObject cursor;
+    public bool playing = false;
     // Loop fire method
     void Start()
     {
-        InvokeRepeating("Warn", fireStartDelay, 1f/fireRate);
+        cursor = GameObject.Find("Cursor");
+    }
+    void Update()
+    {
+        if (cursor != null)
+        {
+            if (!playing && !cursor.gameObject.activeSelf)
+            {
+                InvokeRepeating("Warn", fireStartDelay, 1f/fireRate);
+                playing = true;
+            }
+        }
     }
     // Warn player before shooting
     void Warn()
