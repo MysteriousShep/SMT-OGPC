@@ -559,7 +559,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0.25
   movement: {x: 0, y: 0}
-  playerAnimator: {fileID: 0}
+  playerAnimator: {fileID: 434407432}
   jumpSpeed: 0.4
   jumpDuration: 10
   gravity: 2

@@ -118,34 +118,34 @@ public class PlatformPlayerController : MonoBehaviour
             
                 if (xSpeed != 0)
                 {
-                    //playerAnimator.SetTrigger("Run");
+                    playerAnimator.SetTrigger("Run");
                     
                 }
                 else
                 {
-                    //playerAnimator.SetTrigger("Idle");
+                    playerAnimator.SetTrigger("Idle");
                 }
         }
         else
         {
             if (yVelocity < -0.05f)
             {
-                //playerAnimator.SetTrigger("Fall");
+                playerAnimator.SetTrigger("Jump");
             }
             else if (yVelocity > 0.05f)
             {
-                //playerAnimator.SetTrigger("Jump");
+                playerAnimator.SetTrigger("Jump");
             }
             else
             {
-                //playerAnimator.SetTrigger("Hang");
+                playerAnimator.SetTrigger("Jump");
             }
         }
         if (jumpFrame < jumpDuration && movement.y > 0 && coyoteFrame < coyoteTime) 
         {
             jumpFrame += 1;
             yVelocity = jumpSpeed;
-            //playerAnimator.SetTrigger("Jump");
+            playerAnimator.SetTrigger("Jump");
             grounded = false;
         } 
         else if (jumpFrame < jumpDuration && (jumpFrame > 0 || coyoteFrame >= coyoteTime) && !grounded) 
@@ -234,7 +234,7 @@ public class PlatformPlayerController : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().flipX = false;
         }
-        //playerAnimator.SetFloat("xSpeed",Mathf.Abs(xSpeed/speed));
+        playerAnimator.SetFloat("xSpeed",Mathf.Abs(xSpeed/speed));
         
         xVelocity += xSpeed;
         GetHitBoxAtPosition(transform.position.x+xVelocity,transform.position.y,1.2f,0.4f);
