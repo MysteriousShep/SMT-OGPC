@@ -7,7 +7,7 @@ public class PlatformPlayerController : MonoBehaviour
     public float speed = 5.0f;
     public Vector2 movement;
     public Animator playerAnimator;
-    private float yVelocity;
+    public float yVelocity;
     private int coyoteFrame = 0;
     private bool grounded = false;
     private int jumpFrame = 0;
@@ -17,9 +17,8 @@ public class PlatformPlayerController : MonoBehaviour
     public int coyoteTime = 0;
     public int accelleration = 3;
     public int deccelleration = 3;
-    private float xVelocity = 0;
-    private float xSpeed = 0;
-    private Collider2D hit;
+    public float xVelocity = 0;
+    public float xSpeed = 0;
     public List<GameObject> hair;
     public GameObject hairObject;
     public int hairLength = 6;
@@ -32,12 +31,6 @@ public class PlatformPlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //playerAnimator = GetComponent<Animator>();
-        /*
-        hair.Add(Instantiate(hairObject,new Vector3(transform.position.x,transform.position.y-0.1f,transform.position.z-1),transform.rotation));
-        hair[0].GetComponent<HairFollow>().player = gameObject;
-        hair[0].GetComponent<HairFollow>().first = true;
-        */
         for (int i = 1; i < hairLength; i++)
         {
             hair.Add(Instantiate(hairObject,new Vector3(transform.position.x,transform.position.y-i*0.1f,transform.position.z-1),transform.rotation));
@@ -76,29 +69,29 @@ public class PlatformPlayerController : MonoBehaviour
     
     void FixedUpdate()
     {
+
+
         
-        
-        GetHitBoxAtPosition(transform.position.x,transform.position.y+yVelocity,1.3f,0.5f);
 
         
 
         grounded = false;
-        if (hit != null && hit.gameObject != gameObject) 
+        if (TouchingGroundAtPlace(transform.position.x, transform.position.y + yVelocity, 1.3f, 0.5f)) 
         {
-            
-            
-            GetHitBoxAtPosition(transform.position.x,transform.position.y,1.3f,0.5f);
+
+
+            TouchingGroundAtPlace(transform.position.x,transform.position.y,1.3f,0.5f);
             for (int i = 0; i < 30; i++)
             {
-                if (hit == null) 
+                if (!TouchingGroundAtPlace(transform.position.x, transform.position.y, 1.3f, 0.5f)) 
                 {
                     transform.Translate(new Vector3(0,0.01f*Mathf.Sign(yVelocity),0),Space.World);
-                    GetHitBoxAtPosition(transform.position.x,transform.position.y,1.3f,0.5f);
+                    
                 }
             }
             yVelocity = 0;
-            GetHitBoxAtPosition(transform.position.x,transform.position.y,1.4f,0.4f);
-            if (hit != null && hit.gameObject != gameObject)
+            
+            if (TouchingGroundAtPlace(transform.position.x, transform.position.y, 1.4f, 0.4f))
             {
                 grounded = true;
             }
@@ -237,19 +230,17 @@ public class PlatformPlayerController : MonoBehaviour
         playerAnimator.SetFloat("xSpeed",Mathf.Abs(xSpeed/speed));
         
         xVelocity += xSpeed;
-        GetHitBoxAtPosition(transform.position.x+xVelocity,transform.position.y,1.2f,0.4f);
-        if (hit != null && hit.gameObject != gameObject) 
+        
+        if (TouchingGroundAtPlace(transform.position.x + xVelocity, transform.position.y, 1.2f, 0.4f)) 
         {
-            
-            
-            GetHitBoxAtPosition(transform.position.x,transform.position.y,1.2f,0.4f);
+
+
+            TouchingGroundAtPlace(transform.position.x,transform.position.y,1.2f,0.4f);
             for (int i = 0; i < 30; i++)
             {
-                if (hit == null) 
+                if (!TouchingGroundAtPlace(transform.position.x, transform.position.y, 1.2f, 0.4f)) 
                 {
                     transform.Translate(new Vector3(0.01f*Mathf.Sign(xVelocity),0,0));
-                    GetHitBoxAtPosition(transform.position.x,transform.position.y,1.2f,0.4f);
-                    
                 }
             }
             transform.Translate(new Vector3(-0.01f*Mathf.Sign(xVelocity),0,0));
@@ -259,7 +250,7 @@ public class PlatformPlayerController : MonoBehaviour
                 yVelocity = jumpSpeed;
                 jumpFrame = 0;
                 coyoteFrame = 0;
-                if (wallJumpFrame <= 0 && Mathf.Abs(xVelocity) < 0.25f)
+                if (wallJumpFrame <= 0 && Mathf.Abs(xVelocity) < speed)
                 {
                     xVelocity *= -1.5f;
                 } else {
@@ -278,16 +269,37 @@ public class PlatformPlayerController : MonoBehaviour
         
     }
 
-    void GetHitBoxAtPosition(float x, float y,float minHeight = 0.55f, float maxHeight = 1.0f)
+    bool TouchingGroundAtPlace(float x, float y,float minHeight = 0.55f, float maxHeight = 1.0f)
     {
         Vector2 max = new Vector2(x+0.45f,y+maxHeight);
         Vector2 min = new Vector2(x-0.45f,y-minHeight);
-        hit = Physics2D.OverlapArea(max,min);
+        Collider2D[] hit = Physics2D.OverlapAreaAll(max,min);
         Debug.DrawLine(new Vector3(max.x,max.y,0),new Vector3(min.x,max.y,0),Color.red);
         Debug.DrawLine(new Vector3(min.x,max.y,0),new Vector3(min.x,min.y,0),Color.red);
         Debug.DrawLine(new Vector3(min.x,min.y,0),new Vector3(max.x,min.y,0),Color.red);
         Debug.DrawLine(new Vector3(max.x,min.y,0),new Vector3(max.x,max.y,0),Color.red);
+        if (hit != null)
+        {
+            for (int i = 0; i < hit.Length; i++)
+            {
+                if (hit[i].gameObject.tag == "Ground")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        else
+        {
+            return false;
+        }
     }
 
+    void SetVelocity(float newXVelocity = 0, float newYVelocity = 0, float newXSpeed = 0)
+    {
+        xVelocity = newXVelocity;
+        yVelocity = newYVelocity;
+        xSpeed = newXSpeed;
+    }
 
 }
