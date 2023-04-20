@@ -10,10 +10,12 @@ public class PlayerAttack : MonoBehaviour
     private Vector3 positionOffset = new Vector3(0, 0, 0);
     public float attackDistance = 2;
     public GameObject camera;
+    public PlatformPlayerController velocity;
 
     void Start()
     {
         attackHitBox.SetActive(false);
+        velocity = GetComponent<PlatformPlayerController>();
     }
 
     void FixedUpdate()

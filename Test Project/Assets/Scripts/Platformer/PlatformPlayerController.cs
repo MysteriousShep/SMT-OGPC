@@ -27,6 +27,7 @@ public class PlatformPlayerController : MonoBehaviour
     private int wallJumpFrame = 0;
     private float yMin = 0.25f;
     private float yMax = 1;
+    public float jumpSpeedMultiplier = 1.75f;
 
     // Start is called before the first frame update
     void Start()
@@ -139,7 +140,29 @@ public class PlatformPlayerController : MonoBehaviour
             jumpFrame += 1;
             yVelocity = jumpSpeed;
             playerAnimator.SetTrigger("Jump");
+            if (jumpFrame < jumpDuration && wallJumpFrame <= 0)
+            {
+                xVelocity -= xSpeed;
+                if (movement.x != 0)
+                {
+                    xSpeed = jumpSpeedMultiplier * speed * Mathf.Sign(movement.x);
+                }
+                else
+                {
+                    if (GetComponent<SpriteRenderer>().flipX)
+                    {
+                        xSpeed = -jumpSpeedMultiplier * speed;
+                    }
+                    else
+                    {
+                        xSpeed = jumpSpeedMultiplier * speed;
+                    }
+                    
+                }
+                xVelocity += xSpeed;
+            }
             grounded = false;
+            
         } 
         else if (jumpFrame < jumpDuration && (jumpFrame > 0 || coyoteFrame >= coyoteTime) && !grounded) 
         {
@@ -196,24 +219,24 @@ public class PlatformPlayerController : MonoBehaviour
                         xSpeed = 0;
                     }
                 }
-                if (xVelocity < 0)
-                {
-                    xVelocity += speed/deccelleration;
-                    if (xVelocity > 0)
-                    {
-                        xVelocity = 0;
-                    }
-                }
+            }
+            if (xVelocity < 0)
+            {
+                xVelocity += speed / deccelleration;
                 if (xVelocity > 0)
                 {
-                    xVelocity -= speed/deccelleration;
-                    if (xVelocity < 0)
-                    {
-                        xVelocity = 0;
-                    }
+                    xVelocity = 0;
                 }
             }
-            
+            if (xVelocity > 0)
+            {
+                xVelocity -= speed / deccelleration;
+                if (xVelocity < 0)
+                {
+                    xVelocity = 0;
+                }
+            }
+
         }
         else
         {
@@ -247,16 +270,12 @@ public class PlatformPlayerController : MonoBehaviour
             if (movement.y > 0)
             {
                 xSpeed *= -1;
+                xVelocity *= -1;
                 yVelocity = jumpSpeed;
                 jumpFrame = 0;
                 coyoteFrame = 0;
-                if (wallJumpFrame <= 0 && Mathf.Abs(xVelocity) < speed)
-                {
-                    xVelocity *= -1.5f;
-                } else {
-                    xVelocity *= -1;
-                }
                 wallJumpFrame = wallJumpCooldown;
+                playerAnimator.SetTrigger("Idle");
             }
             else
             {
@@ -269,10 +288,10 @@ public class PlatformPlayerController : MonoBehaviour
         
     }
 
-    bool TouchingGroundAtPlace(float x, float y,float minHeight = 0.55f, float maxHeight = 1.0f)
+    bool TouchingGroundAtPlace(float x, float y,float minHeight = 0.55f, float maxHeight = 1.0f, float width = 0.45f)
     {
-        Vector2 max = new Vector2(x+0.45f,y+maxHeight);
-        Vector2 min = new Vector2(x-0.45f,y-minHeight);
+        Vector2 max = new Vector2(x+width,y+maxHeight);
+        Vector2 min = new Vector2(x-width,y-minHeight);
         Collider2D[] hit = Physics2D.OverlapAreaAll(max,min);
         Debug.DrawLine(new Vector3(max.x,max.y,0),new Vector3(min.x,max.y,0),Color.red);
         Debug.DrawLine(new Vector3(min.x,max.y,0),new Vector3(min.x,min.y,0),Color.red);
