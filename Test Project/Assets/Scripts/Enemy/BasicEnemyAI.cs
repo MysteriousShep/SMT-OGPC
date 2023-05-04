@@ -7,6 +7,8 @@ public class BasicEnemyAI : MonoBehaviour
     public float speed = 0.1f;
     public float yVelocity = 0;
     public float gravity = 2;
+    public int hp = 1;
+    public GameObject player;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,14 +18,14 @@ public class BasicEnemyAI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (TouchingGroundAtPlace(transform.position.x, transform.position.y + yVelocity, 1f, 0.5f))
+        if (TouchingTagAtPlace(transform.position.x, transform.position.y + yVelocity, 1f, 0.5f))
         {
 
 
-            TouchingGroundAtPlace(transform.position.x, transform.position.y, 1f, 0.5f);
+            TouchingTagAtPlace(transform.position.x, transform.position.y, 1f, 0.5f);
             for (int i = 0; i < 30; i++)
             {
-                if (!TouchingGroundAtPlace(transform.position.x, transform.position.y, 1f, 0.5f))
+                if (!TouchingTagAtPlace(transform.position.x, transform.position.y, 1f, 0.5f))
                 {
                     transform.Translate(new Vector3(0, 0.01f * Mathf.Sign(yVelocity), 0), Space.World);
 
@@ -35,15 +37,33 @@ public class BasicEnemyAI : MonoBehaviour
 
         yVelocity -= gravity * Time.fixedDeltaTime;
         transform.position = new Vector3(transform.position.x+speed,transform.position.y,0);
-        if (!TouchingGroundAtPlace(transform.position.x + speed, transform.position.y, 1.25f, 0, 0.5f))
+        if (!TouchingTagAtPlace(transform.position.x + speed, transform.position.y, 1.25f, 1f, 0.5f) || (TouchingTagAtPlace(transform.position.x + speed, transform.position.y, 0.9f, 0, 0.5f)))
         {
             speed *= -1;
         }
-
+        if (TouchingTagAtPlace(transform.position.x,transform.position.y,1.25f,1.5f,0.6f,"PlayerAttack"))
+        {
+            hp -= 1;
+            if (player.GetComponent<PlayerAttack>().positionOffset.y < 0)
+            {
+                player.GetComponent<PlatformPlayerController>().SetVelocity(player.GetComponent<PlatformPlayerController>().xVelocity,player.GetComponent<PlayerAttack>().knockbackAmount,player.GetComponent<PlatformPlayerController>().xSpeed);
+            }
+            if (player.GetComponent<PlayerAttack>().positionOffset.x < 0)
+            {
+                player.GetComponent<PlatformPlayerController>().SetVelocity(player.GetComponent<PlatformPlayerController>().xVelocity+player.GetComponent<PlayerAttack>().knockbackAmount,player.GetComponent<PlatformPlayerController>().yVelocity,player.GetComponent<PlatformPlayerController>().xSpeed);
+            }
+            if (player.GetComponent<PlayerAttack>().positionOffset.x > 0)
+            {
+                player.GetComponent<PlatformPlayerController>().SetVelocity(player.GetComponent<PlatformPlayerController>().xVelocity-player.GetComponent<PlayerAttack>().knockbackAmount,player.GetComponent<PlatformPlayerController>().yVelocity,player.GetComponent<PlatformPlayerController>().xSpeed);
+            }
+            if (hp <= 0) {
+                Destroy(gameObject);
+            }
+        }
     }
 
 
-    bool TouchingGroundAtPlace(float x, float y, float minHeight = 0.55f, float maxHeight = 1.0f, float width = 0.45f)
+    bool TouchingTagAtPlace(float x, float y, float minHeight = 0.55f, float maxHeight = 1.0f, float width = 0.45f, string target = "Ground")
     {
         Vector2 max = new Vector2(x + width, y + maxHeight);
         Vector2 min = new Vector2(x - width, y - minHeight);
@@ -56,7 +76,7 @@ public class BasicEnemyAI : MonoBehaviour
         {
             for (int i = 0; i < hit.Length; i++)
             {
-                if (hit[i].gameObject.tag == "Ground")
+                if (hit[i].gameObject.tag == target)
                 {
                     return true;
                 }

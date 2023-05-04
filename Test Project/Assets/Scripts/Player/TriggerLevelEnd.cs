@@ -5,16 +5,32 @@ using UnityEngine.SceneManagement;
 
 public class TriggerLevelEnd : MonoBehaviour
 {
-    public int level = 1;
-    public Vector3 spawnPos = new Vector3(6.75f,-4.5f,0f);
-    // When touched by a trigger
-    void OnTriggerEnter2D(Collider2D other)
+    void FixedUpdate()
     {
-        // When triggered by the level end
-        if (other.gameObject.CompareTag("LevelEnd"))
+        Vector2 max = new Vector2(transform.position.x+0.45f,transform.position.y+0.5f);
+        Vector2 min = new Vector2(transform.position.x-0.45f,transform.position.y-1.3f);
+        Collider2D[] hit = Physics2D.OverlapAreaAll(max,min);
+        Debug.DrawLine(new Vector3(max.x,max.y,0),new Vector3(min.x,max.y,0),Color.green);
+        Debug.DrawLine(new Vector3(min.x,max.y,0),new Vector3(min.x,min.y,0),Color.green);
+        Debug.DrawLine(new Vector3(min.x,min.y,0),new Vector3(max.x,min.y,0),Color.green);
+        Debug.DrawLine(new Vector3(max.x,min.y,0),new Vector3(max.x,max.y,0),Color.green);
+        if (hit != null)
         {
-            level += 1;
-            SceneManager.LoadScene("Level1");
+            for (int i = 0; i < hit.Length; i++)
+            {
+                if (hit[i].gameObject.tag == "LevelEnd")
+                {
+                    Debug.Log("AAA");
+                    
+                    Vector2 newVelocity = new Vector2(transform.position.x-GetComponent<PlatformPlayerController>().lastGroundedPosition.x,transform.position.y-GetComponent<PlatformPlayerController>().lastGroundedPosition.y);
+                    float newXVelocity = newVelocity.x;
+                    float newYVelocity = newVelocity.y;
+                    //GetComponent<PlatformPlayerController>().SetVelocity(0.5f*Mathf.Sign(newXVelocity/-20),0.5f,0);
+                    transform.position = GetComponent<PlatformPlayerController>().lastGroundedPosition;
+                }
+            }
+            
         }
     }
+    
 }

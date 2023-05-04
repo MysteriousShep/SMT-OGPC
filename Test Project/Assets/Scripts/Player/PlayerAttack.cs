@@ -7,10 +7,12 @@ public class PlayerAttack : MonoBehaviour
     public GameObject attackHitBox;
     public int attackLength = 30;
     private int attackFrame = 0;
-    private Vector3 positionOffset = new Vector3(0, 0, 0);
+    public Vector3 positionOffset = new Vector3(0, 0, 0);
     public float attackDistance = 2;
     public GameObject camera;
     public PlatformPlayerController velocity;
+    public float knockbackAmount = 0.5f;
+    public List<string> paradoxes;
 
     void Start()
     {
@@ -59,6 +61,7 @@ public class PlayerAttack : MonoBehaviour
                 }
             }
             attackHitBox.transform.position = transform.position + positionOffset;
+
         }
     }
 }

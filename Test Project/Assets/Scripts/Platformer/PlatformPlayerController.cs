@@ -19,52 +19,22 @@ public class PlatformPlayerController : MonoBehaviour
     public int deccelleration = 3;
     public float xVelocity = 0;
     public float xSpeed = 0;
-    public List<GameObject> hair;
-    public GameObject hairObject;
-    public int hairLength = 6;
-    public Sprite hairSprite;
     public int wallJumpCooldown = 20;
     private int wallJumpFrame = 0;
-    private float yMin = 0.25f;
-    private float yMax = 1;
     public float jumpSpeedMultiplier = 1.75f;
+    public Vector3 lastGroundedPosition;
 
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 1; i < hairLength; i++)
-        {
-            hair.Add(Instantiate(hairObject,new Vector3(transform.position.x,transform.position.y-i*0.1f,transform.position.z-1),transform.rotation));
-            hair[i].GetComponent<HairFollow>().player = hair[i-1];
-            hair[i].GetComponent<HairFollow>().index = i/4+2;
-            if (i > hairLength-3)
-            {
-                hair[i].GetComponent<SpriteRenderer>().sprite = hairSprite;
-            }
-        }
+        lastGroundedPosition = transform.position;
     }
 
     void Update()
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Jump");
-        if (movement.x < 0)
-        {
-            for (int i = 0; i < hairLength; i++)
-            {
-                hair[i].transform.localScale = new Vector3(-0.5f,0.5f,1);
-            }
-            
-            
-        }
-        if (movement.x > 0)
-        {
-            for (int i = 0; i < hairLength; i++)
-            {
-                hair[i].transform.localScale = new Vector3(0.5f,0.5f,1);
-            }
-            
-        }
+        
         
     }
     
@@ -95,6 +65,24 @@ public class PlatformPlayerController : MonoBehaviour
             if (TouchingGroundAtPlace(transform.position.x, transform.position.y, 1.4f, 0.4f))
             {
                 grounded = true;
+                Vector2 max = new Vector2(transform.position.x+0.1f,transform.position.y+0.4f);
+                Vector2 min = new Vector2(transform.position.x-0.1f,transform.position.y-1.4f);
+                Collider2D[] hit = Physics2D.OverlapAreaAll(max,min);
+                Debug.DrawLine(new Vector3(max.x,max.y,0),new Vector3(min.x,max.y,0),Color.red);
+                Debug.DrawLine(new Vector3(min.x,max.y,0),new Vector3(min.x,min.y,0),Color.red);
+                Debug.DrawLine(new Vector3(min.x,min.y,0),new Vector3(max.x,min.y,0),Color.red);
+                Debug.DrawLine(new Vector3(max.x,min.y,0),new Vector3(max.x,max.y,0),Color.red);
+                if (hit != null)
+                {
+                    for (int i = 0; i < hit.Length; i++)
+                    {
+                        if (hit[i].gameObject.layer == 0 && hit[i].tag == "Ground")
+                        {
+                            lastGroundedPosition = transform.position;
+                        }
+                    }
+                }
+                
             }
             else
             {
@@ -314,7 +302,7 @@ public class PlatformPlayerController : MonoBehaviour
         }
     }
 
-    void SetVelocity(float newXVelocity = 0, float newYVelocity = 0, float newXSpeed = 0)
+    public void SetVelocity(float newXVelocity = 0, float newYVelocity = 0, float newXSpeed = 0)
     {
         xVelocity = newXVelocity;
         yVelocity = newYVelocity;
