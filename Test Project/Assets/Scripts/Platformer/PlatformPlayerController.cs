@@ -8,9 +8,9 @@ public class PlatformPlayerController : MonoBehaviour
     public Vector2 movement;
     public Animator playerAnimator;
     public float yVelocity;
-    private int coyoteFrame = 0;
-    private bool grounded = false;
-    private int jumpFrame = 0;
+    public int coyoteFrame = 0;
+    public bool grounded = false;
+    public int jumpFrame = 0;
     public float jumpSpeed = 10.0f;
     public int jumpDuration = 20;
     public float gravity;
@@ -20,9 +20,10 @@ public class PlatformPlayerController : MonoBehaviour
     public float xVelocity = 0;
     public float xSpeed = 0;
     public int wallJumpCooldown = 20;
-    private int wallJumpFrame = 0;
+    public int wallJumpFrame = 0;
     public float jumpSpeedMultiplier = 1.75f;
     public Vector3 lastGroundedPosition;
+    private bool wallJump = false;
 
     // Start is called before the first frame update
     void Start()
@@ -97,6 +98,7 @@ public class PlatformPlayerController : MonoBehaviour
             jumpFrame = 0;
             coyoteFrame = 0;
             yVelocity = 0;
+            wallJump = false;
             
                 if (xSpeed != 0)
                 {
@@ -148,6 +150,7 @@ public class PlatformPlayerController : MonoBehaviour
                     
                 }
                 xVelocity += xSpeed;
+                wallJump = false;
             }
             grounded = false;
             
@@ -255,7 +258,7 @@ public class PlatformPlayerController : MonoBehaviour
                 }
             }
             transform.Translate(new Vector3(-0.01f*Mathf.Sign(xVelocity),0,0));
-            if (movement.y > 0)
+            if (movement.y > 0 && (jumpFrame > jumpDuration*3/4 || wallJump))
             {
                 xSpeed *= -1;
                 xVelocity *= -1;
@@ -263,6 +266,7 @@ public class PlatformPlayerController : MonoBehaviour
                 jumpFrame = 0;
                 coyoteFrame = 0;
                 wallJumpFrame = wallJumpCooldown;
+                wallJump = true;
                 playerAnimator.SetTrigger("Idle");
             }
             else

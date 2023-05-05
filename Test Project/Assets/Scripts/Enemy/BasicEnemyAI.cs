@@ -44,10 +44,12 @@ public class BasicEnemyAI : MonoBehaviour
         if (TouchingTagAtPlace(transform.position.x,transform.position.y,1.25f,1.5f,0.6f,"PlayerAttack"))
         {
             hp -= 1;
-            if (player.GetComponent<PlayerAttack>().positionOffset.y < 0)
-            {
-                player.GetComponent<PlatformPlayerController>().SetVelocity(player.GetComponent<PlatformPlayerController>().xVelocity,player.GetComponent<PlayerAttack>().knockbackAmount,player.GetComponent<PlatformPlayerController>().xSpeed);
-            }
+            
+                player.GetComponent<PlatformPlayerController>().SetVelocity(player.GetComponent<PlatformPlayerController>().xVelocity,player.GetComponent<PlayerAttack>().knockbackAmount*3/4,player.GetComponent<PlatformPlayerController>().xSpeed);
+                player.GetComponent<PlatformPlayerController>().jumpFrame = 0;
+                player.GetComponent<PlatformPlayerController>().coyoteFrame = 0;
+
+            
             if (player.GetComponent<PlayerAttack>().positionOffset.x < 0)
             {
                 player.GetComponent<PlatformPlayerController>().SetVelocity(player.GetComponent<PlatformPlayerController>().xVelocity+player.GetComponent<PlayerAttack>().knockbackAmount,player.GetComponent<PlatformPlayerController>().yVelocity,player.GetComponent<PlatformPlayerController>().xSpeed);
