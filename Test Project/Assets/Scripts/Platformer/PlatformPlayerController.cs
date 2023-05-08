@@ -35,8 +35,6 @@ public class PlatformPlayerController : MonoBehaviour
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Jump");
-        
-        
     }
     
     void FixedUpdate()
@@ -52,7 +50,6 @@ public class PlatformPlayerController : MonoBehaviour
         {
 
 
-            TouchingGroundAtPlace(transform.position.x,transform.position.y,1.3f,0.5f);
             for (int i = 0; i < 30; i++)
             {
                 if (!TouchingGroundAtPlace(transform.position.x, transform.position.y, 1.3f, 0.5f)) 
@@ -112,18 +109,7 @@ public class PlatformPlayerController : MonoBehaviour
         }
         else
         {
-            if (yVelocity < -0.05f)
-            {
-                playerAnimator.SetTrigger("Jump");
-            }
-            else if (yVelocity > 0.05f)
-            {
-                playerAnimator.SetTrigger("Jump");
-            }
-            else
-            {
-                playerAnimator.SetTrigger("Jump");
-            }
+            playerAnimator.SetTrigger("Jump");
         }
         if (jumpFrame < jumpDuration && movement.y > 0 && coyoteFrame < coyoteTime) 
         {
