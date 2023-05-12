@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class PlayerAttack : MonoBehaviour
 {
     public GameObject attackHitBox;
+    public int attackCooldown = 30;
     public int attackLength = 30;
     private int attackFrame = 0;
     public Vector3 positionOffset = new Vector3(0, 0, 0);
@@ -13,6 +16,8 @@ public class PlayerAttack : MonoBehaviour
     public PlatformPlayerController velocity;
     public float knockbackAmount = 0.5f;
     public List<string> paradoxes;
+    public TextMeshProUGUI attackText;
+    private int paradoxIndex = 0;
 
     void Start()
     {
@@ -29,13 +34,15 @@ public class PlayerAttack : MonoBehaviour
     {
         if (Input.GetButton("Fire1") && attackFrame < 0)
         {
+            paradoxIndex = Random.Range(0,paradoxes.Count);
             attackHitBox.SetActive(true);
-            attackFrame = attackLength;
+            attackFrame = attackCooldown;
             attackHitBox.transform.position = transform.position;
             positionOffset = new Vector3(0, 0, 0);
             camera.GetComponent<Screenshake>().screenshake = Mathf.Max(camera.GetComponent<Screenshake>().screenshake, 4);
+            attackText.text = paradoxes[paradoxIndex];
         }
-        if (attackFrame < 0)
+        if (attackFrame < attackCooldown - attackLength)
         {
             attackHitBox.SetActive(false);
         }
