@@ -9,10 +9,13 @@ public class BasicEnemyAI : MonoBehaviour
     public float gravity = 2;
     public int hp = 1;
     public GameObject player;
+    public bool dead = false;
+    public float maxDistance = 100f;
+    private Vector2 startPos;
     // Start is called before the first frame update
     void Start()
     {
-        
+        startPos = new Vector2(transform.position.x,transform.position.y);
     }
 
     // Update is called once per frame
@@ -37,29 +40,46 @@ public class BasicEnemyAI : MonoBehaviour
 
         yVelocity -= gravity * Time.fixedDeltaTime;
         transform.position = new Vector3(transform.position.x+speed,transform.position.y,0);
-        if (!TouchingTagAtPlace(transform.position.x + speed, transform.position.y, 1.25f, 1f, 0.5f) || (TouchingTagAtPlace(transform.position.x + speed, transform.position.y, 0.9f, 0, 0.5f)))
+        if ((gravity > 0 && !TouchingTagAtPlace(transform.position.x + speed, transform.position.y, 1.25f, 1f, 0.5f)) || (TouchingTagAtPlace(transform.position.x + speed, transform.position.y, 0.9f, 0, 0.5f)) || Vector2.Distance(startPos,new Vector2(transform.position.x+speed,transform.position.y)) > maxDistance)
         {
             speed *= -1;
+            GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
         }
-        if (TouchingTagAtPlace(transform.position.x,transform.position.y,1.25f,1.5f,0.6f,"PlayerAttack"))
+        if (TouchingTagAtPlace(transform.position.x,transform.position.y,1.25f,1.5f,0.6f,"PlayerAttack") && !dead)
         {
             hp -= 1;
             
-                player.GetComponent<PlatformPlayerController>().SetVelocity(player.GetComponent<PlatformPlayerController>().xVelocity,player.GetComponent<PlayerAttack>().knockbackAmount*3/4,player.GetComponent<PlatformPlayerController>().xSpeed);
+                player.GetComponent<PlatformPlayerController>().SetVelocity(player.GetComponent<PlatformPlayerController>().xVelocity,player.GetComponent<PlayerAttack>().knockbackAmount,player.GetComponent<PlatformPlayerController>().xSpeed);
                 player.GetComponent<PlatformPlayerController>().jumpFrame = 0;
                 player.GetComponent<PlatformPlayerController>().coyoteFrame = 0;
 
             
             if (player.GetComponent<PlayerAttack>().positionOffset.x < 0)
             {
-                player.GetComponent<PlatformPlayerController>().SetVelocity(player.GetComponent<PlatformPlayerController>().xVelocity+player.GetComponent<PlayerAttack>().knockbackAmount,player.GetComponent<PlatformPlayerController>().yVelocity,player.GetComponent<PlatformPlayerController>().xSpeed);
+                player.GetComponent<PlatformPlayerController>().SetVelocity(player.GetComponent<PlatformPlayerController>().xVelocity,player.GetComponent<PlatformPlayerController>().yVelocity,player.GetComponent<PlatformPlayerController>().xSpeed+player.GetComponent<PlayerAttack>().knockbackAmount);
             }
             if (player.GetComponent<PlayerAttack>().positionOffset.x > 0)
             {
-                player.GetComponent<PlatformPlayerController>().SetVelocity(player.GetComponent<PlatformPlayerController>().xVelocity-player.GetComponent<PlayerAttack>().knockbackAmount,player.GetComponent<PlatformPlayerController>().yVelocity,player.GetComponent<PlatformPlayerController>().xSpeed);
+                player.GetComponent<PlatformPlayerController>().SetVelocity(player.GetComponent<PlatformPlayerController>().xVelocity,player.GetComponent<PlatformPlayerController>().yVelocity,player.GetComponent<PlatformPlayerController>().xSpeed-player.GetComponent<PlayerAttack>().knockbackAmount);
             }
             if (hp <= 0) {
-                Destroy(gameObject);
+                dead = true;
+                GetComponent<Animator>().SetTrigger("Defeat");
+                Destroy(gameObject,16f/60f);
+            }
+        }
+        if (!dead) {
+            if (TouchingTagAtPlace(transform.position.x,transform.position.y,1.25f,0.5f,0.6f,"Friendly")) {
+                player.GetComponent<GetHit>().Hit(1);
+                if (player.transform.position.x < transform.position.x)
+                {
+                    player.GetComponent<PlatformPlayerController>().SetVelocity(1f,player.GetComponent<PlatformPlayerController>().yVelocity,1f);
+                }
+                if (player.transform.position.x > transform.position.x)
+                {
+                    player.GetComponent<PlatformPlayerController>().SetVelocity(-1f,player.GetComponent<PlatformPlayerController>().yVelocity,-1f);
+                }
+                player.GetComponent<PlatformPlayerController>().SetVelocity(player.GetComponent<PlatformPlayerController>().xVelocity,0.5f,player.GetComponent<PlatformPlayerController>().xSpeed);
             }
         }
     }

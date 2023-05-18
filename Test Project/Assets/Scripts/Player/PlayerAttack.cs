@@ -11,7 +11,8 @@ public class PlayerAttack : MonoBehaviour
     public int attackLength = 30;
     private int attackFrame = 0;
     public Vector3 positionOffset = new Vector3(0, 0, 0);
-    public float attackDistance = 2;
+    public float verticalAttackDistance = 2;
+    public float horizontalAttackDistance = 4;
     public GameObject camera;
     public PlatformPlayerController velocity;
     public float knockbackAmount = 0.5f;
@@ -52,19 +53,19 @@ public class PlayerAttack : MonoBehaviour
             {
                 if (Input.GetAxis("Horizontal") > 0)
                 {
-                    positionOffset = new Vector3(attackDistance, 0, 0);
+                    positionOffset = new Vector3(horizontalAttackDistance, 0, 0);
                 }
                 if (Input.GetAxis("Horizontal") < 0)
                 {
-                    positionOffset = new Vector3(-attackDistance, 0, 0);
+                    positionOffset = new Vector3(-horizontalAttackDistance, 0, 0);
                 }
                 if (Input.GetAxis("Vertical") > 0)
                 {
-                    positionOffset = new Vector3(0, attackDistance, 0);
+                    positionOffset = new Vector3(0, verticalAttackDistance, 0);
                 }
                 if (Input.GetAxis("Vertical") < 0)
                 {
-                    positionOffset = new Vector3(0, -attackDistance, 0);
+                    positionOffset = new Vector3(0, -verticalAttackDistance, 0);
                 }
             }
             attackHitBox.transform.position = transform.position + positionOffset;
