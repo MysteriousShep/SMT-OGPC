@@ -35,6 +35,10 @@ public class PlatformPlayerController : MonoBehaviour
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Jump");
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            transform.position = new Vector2(-555,90);
+        }
     }
     
     void FixedUpdate()
