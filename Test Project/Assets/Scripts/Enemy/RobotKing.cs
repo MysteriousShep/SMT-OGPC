@@ -38,8 +38,8 @@ public class RobotKing : MonoBehaviour
             }
         }
         if (!dead) {
-            if (TouchingTagAtPlace(transform.position.x,transform.position.y,50f,30f,8f,"Friendly")) {
-                player.GetComponent<GetHit>().Hit(10);
+            if (TouchingTagAtPlace(transform.position.x,transform.position.y,50f,25f,8f,"Friendly")) {
+                player.GetComponent<GetHit>().Hit(1);
                 if (player.transform.position.x < transform.position.x)
                 {
                     player.GetComponent<PlatformPlayerController>().SetVelocity(1f,player.GetComponent<PlatformPlayerController>().yVelocity,1f);
